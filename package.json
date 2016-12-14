@@ -11,5 +11,8 @@
     "session"
   ],
   "author": "David Murdoch",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "easy-pbkdf2": "2.0.0"
+  }
 }

@@ -1,0 +1,26 @@
+# Node build artifacts
+node_modules
+npm-debug.log
+
+/bin/
+/obj/
+/build/
+/Debug/
+/cache/*
+
+!/cache/.cache
+
+.ntvs_analysis.dat
+.ntvs_analysis.dat.tmp
+.vs
+
+# Local development
+*.env
+*.dev
+.DS_Store
+
+# Docker
+Dockerfile
+docker-compose.yml
+*.dat
+.vscode/launch.json
