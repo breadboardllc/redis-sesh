@@ -14,7 +14,7 @@ RedisSession.prototype = {
 		const client = this._client;
 		const prefix = this._prefix;
 		return easyPbkdf2.random( 21, function( buf ) {
-			const sessionId = buf.toString( "hex" );
+			const sessionId = buf.toString( "base64" );
 			const args = [prefix + sessionId, userId];
 			if ( ttl ) {
 				args.push("EX", ttl);
