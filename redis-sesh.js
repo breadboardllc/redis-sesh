@@ -32,7 +32,7 @@ RedisSession.prototype = {
 	},
 	"liv": function(sessionId, callback){
 		const ttl = this._ttl;
-		if ( ttl ) return callback();
+		if ( !ttl ) return callback();
 		this._client.expire(this._prefix + sessionId, ttl, callback);
 	}
 };
