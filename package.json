@@ -15,8 +15,5 @@
   "dependencies": {
     "easy-pbkdf2": "2.0.0"
   },
-  "repository" : {
-    "type" : "git",
-    "url" : "breadboardllc/redis-sesh"
-  }
+  "repository": "breadboardllc/redis-sesh"
 }
