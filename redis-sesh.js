@@ -25,7 +25,7 @@ RedisSession.prototype = {
 		});
 	},
 	"get": function(sessionId, callback){
-		this._client.get(this.prefix + sessionId, callback);
+		this._client.get(this._prefix + sessionId, callback);
 	},
 	"die": function(sessionId, callback){
 		this._client.del(this._prefix + sessionId, callback);
