@@ -10,20 +10,15 @@ function RedisSession( redisClient, sessionPrefix, ttl ) {
 
 RedisSession.prototype = {
 	"set": function(userId, callback){
-		return easyPbkdf2.random( 21, function( err, buf ) {
-			if ( err ) {
-				callback( err );
+		return easyPbkdf2.random( 21, function( buf ) {
+			const sessionId = buf.toString( "hex" );
+			const args = [this._prefix + sessionId, userId];
+			if ( ttl ) {
+				args.push("EX", this.ttl);
 			}
-			else {
-				const sessionId = buf.toString( "hex" );
-				const args = [this._prefix + sessionId, userId];
-				if ( ttl ) {
-					args.push("EX", this.ttl);
-				}
-				this._client.set( args, function( err ) {
-					callback(err, err ? undefined : sessionId);
-				});
-			}
+			this._client.set( args, function( err ) {
+				callback(err, err ? undefined : sessionId);
+			});
 		});
 	},
 	"get": function(sessionId, callback){
