@@ -1,0 +1,15 @@
+{
+  "name": "redis-sesh",
+  "version": "1.0.0",
+  "description": "A redis based session store which is pretty much as simple as possible. Probably too simple.",
+  "main": "redis-sesh.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "redis",
+    "session"
+  ],
+  "author": "David Murdoch",
+  "license": "ISC"
+}
