@@ -1,5 +1,7 @@
 "use strict";
 
+var easyPbkdf2 = require("easy-pbkdf2");
+
 function RedisSession( redisClient, sessionPrefix, ttl ) {
 	this._client = redisClient;
 	this._prefix = sessionPrefix + ":";
