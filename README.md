@@ -59,10 +59,10 @@ sesh.die(sessionId, function(err){
 
 ## But are the session ids secure?
 
-It generates 21 bytes of cryptographically random data for the session and converts it to base64. That's 3 
+It generates 32 bytes of cryptographically random data for the session and converts it to base64. That's 3 
 nonillion possible combinations, or 3 thousand billion billion billion.
 
-It basically does something like this: `crypto.randomBytes(21).toString("base64");`. Ok, not basically, that's what it does.
+It basically does something like this: `crypto.randomBytes(32).toString("base64");`. Ok, not basically, that's what it does.
 
 Additionally, `redis-sesh` checks for session id collisions (via [`setnx`](https://redis.io/commands/setnx)) and recomputes a new session id automatically if a collision is found (there
 is still a chance a session id could have expired but the user still has it, then `redis-sesh` creates an idential session id, and the old 

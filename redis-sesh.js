@@ -12,19 +12,42 @@ RedisSession.prototype = {
 	"set": function(userId, callback){
 		const self = this;
 		const ttl = this._ttl;
-		return easyPbkdf2.random( 21, function( buf ) {
+		const client = this._client;
+
+		return easyPbkdf2.random( 32, function( buf ) {
 			const sessionId = buf.toString( "base64" );
-			const args = [self._prefix + sessionId, userId];
+			const prefixed = self._prefix + sessionId;
+			const multi = client.multi();
+
+			multi.setnx(prefixed, userId);
+
 			if ( ttl ) {
-				args.push("EX", ttl);
+				multi.expire(prefixed, ttl);
 			}
-			self._client.setnx( args, function( err, result ) {
-				if( !err && result === 0) {
-					// holy crap, we just had a session collision, just try again.
+			multi.exec(function(err, replies){
+				// we swallow the case where a call to `expire` doesn't work. Cus what cha gunna do?
+
+				const setNxWorked = (replies ? replies[0] : undefined) === 1;
+				// if we don't have any errors but setnx failed then we just had a session collision. just try again.
+				if ( !err && !setNxWorked ) {
 					self.set(userId, callback);
-					return;
 				}
-				callback(err, err ? undefined : sessionId);
+				else if ( err ) {
+					// if we had an error, but we DID set the session id, we need to remove that session id
+					if ( setNxWorked ){
+						self.die(sessionId, function(){
+							callback(err);
+						});
+					}
+					// otherwise, just return the error(s)
+					else {
+						callback(err);
+					}
+				}
+				else {
+					// hey, it worked!
+					callback(null, sessionId);
+				}
 			});
 		});
 	},
@@ -36,7 +59,7 @@ RedisSession.prototype = {
 	},
 	"liv": function(sessionId, callback){
 		const ttl = this._ttl;
-		if ( !ttl ) return callback();
+		if ( !ttl ) return callback(null);
 		this._client.expire(this._prefix + sessionId, ttl, callback);
 	}
 };
