@@ -65,7 +65,7 @@ nonillion possible combinations, or 3 thousand billion billion billion.
 It basically does something like this: `crypto.randomBytes(32).toString("base64");`. Ok, not basically, that's what it does.
 
 Additionally, `redis-sesh` checks for session id collisions (via [`setnx`](https://redis.io/commands/setnx)) and recomputes a new session id automatically if a collision is found (there
-is still a chance a session id could have expired but the user still has it, then `redis-sesh` creates an idential session id, and the old 
+is still a chance a session id could have expired but the user still has it, then `redis-sesh` creates an identical session id, and the old 
 user then visits again. But there is also a chance that you'll get hit by a duck made of pure gold that has the winning lottery 
 numbers engraved on it's beak, but I digress).
 
